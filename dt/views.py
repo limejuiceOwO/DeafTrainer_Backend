@@ -96,6 +96,7 @@ class HomepageView(APIView):
 			now.month,
 			now.day
 		))
+		print(today - datetime.timedelta(now.isoweekday()))
 		now = timezone.make_aware(now)
 		res['today_learned'] = PageLog.objects.filter(log__user=obj.user,log__date__gt=today).count()
 		res['week_learned'] = PageLog.objects.filter(log__user=obj.user,log__date__gt=today - datetime.timedelta(now.isoweekday())).count()
@@ -103,6 +104,6 @@ class HomepageView(APIView):
 			log__user=obj.user,
 			log__date__gt=today - datetime.timedelta(days=day + 1),
 			log__date__lte=today - datetime.timedelta(days=day)
-		).count() for day in range(1,8)]
+		).count() for day in range(0,7)]
 
 		return Response(res)
